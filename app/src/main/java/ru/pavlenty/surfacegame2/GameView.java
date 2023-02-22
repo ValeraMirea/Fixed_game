@@ -7,18 +7,27 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.icu.text.DecimalFormat;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import androidx.annotation.RequiresApi;
+
 import java.util.ArrayList;
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class GameView extends SurfaceView implements Runnable {
 
     volatile boolean playing;
     private Thread gameThread = null;
+
     private Player player;
+    private Friend friend;
+    private Enemy enemy;
+    private Collision_of_ships collision_of_ships;
 
     private Paint paint;
     private Canvas canvas;
@@ -27,10 +36,12 @@ public class GameView extends SurfaceView implements Runnable {
     private ArrayList<Star> stars = new ArrayList<Star>();
 
     int screenX;
-    int countMisses;
+    int Armor;
+    int Safe_Friends = 0;
 
     boolean flag ;
 
+    DecimalFormat df = new DecimalFormat("#.#");
 
     private boolean isGameOver;
 
@@ -46,12 +57,16 @@ public class GameView extends SurfaceView implements Runnable {
     static MediaPlayer gameOnsound;
     final MediaPlayer killedEnemysound;
     final MediaPlayer gameOversound;
+    final MediaPlayer addingpoints;
 
     Context context;
 
     public GameView(Context context, int screenX, int screenY) {
         super(context);
-        player = new Player(context, screenX, screenY);
+        player = new Player(context, screenX, screenY); // Класс игрока
+        friend = new Friend(context, screenX, screenY); // Класс друга
+        enemy = new Enemy(context, screenX, screenY); // Класс Врага
+        collision_of_ships = new Collision_of_ships(context); // Класс Столкновения
 
         surfaceHolder = getHolder();
         paint = new Paint();
@@ -63,9 +78,8 @@ public class GameView extends SurfaceView implements Runnable {
         }
 
         this.screenX = screenX;
-        countMisses = 0;
+        Armor = 5;
         isGameOver = false;
-
 
         score = 0;
         sharedPreferences = context.getSharedPreferences("SHAR_PREF_NAME", Context.MODE_PRIVATE);
@@ -81,7 +95,7 @@ public class GameView extends SurfaceView implements Runnable {
         gameOnsound = MediaPlayer.create(context,R.raw.gameon);
         killedEnemysound = MediaPlayer.create(context,R.raw.killedenemy);
         gameOversound = MediaPlayer.create(context,R.raw.gameover);
-
+        addingpoints = MediaPlayer.create(context,R.raw.addingpoints);
 
         gameOnsound.start();
     }
@@ -131,12 +145,31 @@ public class GameView extends SurfaceView implements Runnable {
 
 
             paint.setTextSize(30);
-            canvas.drawText("Очки: "+score,100,50,paint);
+            canvas.drawText("Очки: " + score,100,50,paint);
+            canvas.drawText("Броня Корабля: " + Armor, 300, 50,paint);
+            canvas.drawText("Спасено друзей: " + Safe_Friends, 650, 50,paint);
 
             canvas.drawBitmap(
                     player.getBitmap(),
                     player.getX(),
                     player.getY(),
+                    paint);
+
+            canvas.drawBitmap(
+                    friend.getBitmap(),
+                    friend.getX(),
+                    friend.getY(),
+                    paint);
+
+            canvas.drawBitmap(
+                    enemy.getBitmap(),
+                    enemy.getX(),
+                    enemy.getY(),
+                    paint);
+            canvas.drawBitmap(
+                    collision_of_ships.getBitmap(),
+                    collision_of_ships.getX(),
+                    collision_of_ships.getY(),
                     paint);
 
 
@@ -146,6 +179,7 @@ public class GameView extends SurfaceView implements Runnable {
 
                 int yPos=(int) ((canvas.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 2));
                 canvas.drawText("Конец игры",canvas.getWidth()/2,yPos,paint);
+                gameOversound.start();
             }
 
             surfaceHolder.unlockCanvasAndPost(canvas);
@@ -159,13 +193,68 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void update() {
-        score++;
+        score+=1;
 
+        if (score >=1500){
+            player.IncreeseSpeed();
+        }
+        if (score >=3500){
+            player.IncreeseSpeed();
+            score+=2;
+        }
+        if (score >=5700){
+            player.IncreeseSpeed();
+        }
+        if (score >=7600){
+            player.IncreeseSpeed();
+            score+=3;
+        }
+        if (score >=8400){
+            player.IncreeseSpeed();
+        }
+        if (score >=9500){
+            player.IncreeseSpeed();
+        }
+        if (score >=15000){
+            player.IncreeseSpeed();
+            score+=3;
+        }
         player.update();
+        friend.update();
+        enemy.update();
 
 
         for (Star s : stars) {
             s.update(player.getSpeed());
+        }
+        collision_of_ships.setX(-250);
+        collision_of_ships.setY(-250);
+
+        if(Rect.intersects(player.getDetectCollision(),enemy.getDetectCollision())) {
+            collision_of_ships.setX(enemy.getX());
+            collision_of_ships.setY(enemy.getY());
+            killedEnemysound.start();
+            enemy.setX(-500);
+            Armor-=5;
+            Safe_Friends-=1;
+            if (Safe_Friends<=0){
+                Safe_Friends = 0;
+            }
+            if (Armor <= 0) {
+                gameOnsound.stop();
+                isGameOver = true;
+                playing = false;
+                gameOversound.start();
+            }
+        }
+        if(Rect.intersects(player.getDetectCollision(),friend.getDetectCollision())) {
+            collision_of_ships.setX(friend.getX());
+            collision_of_ships.setY(friend.getY());
+            addingpoints.start();
+            friend.setX(-500);
+            score += 200;
+            Armor += 1;
+            Safe_Friends+=1;
         }
     }
 

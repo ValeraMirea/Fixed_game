@@ -9,9 +9,9 @@ public class Player {
     private Bitmap bitmap;
     private int x;
     private int y;
-    private int speed = 0;
+    private int  speed = 0;
     private boolean boosting;
-    private final int GRAVITY = -10;
+    private int GRAVITY = -10;
     private int maxY;
     private int minY;
 
@@ -64,15 +64,16 @@ public class Player {
         if (y > maxY) {
             y = maxY;
         }
-
-
         detectCollision.left = x;
         detectCollision.top = y;
         detectCollision.right = x + bitmap.getWidth();
         detectCollision.bottom = y + bitmap.getHeight();
-
     }
-
+    public  void IncreeseSpeed(){
+        speed +=0.5;
+        GRAVITY = -8;
+        update();
+    }
 
     public Rect getDetectCollision() {
         return detectCollision;
@@ -90,7 +91,5 @@ public class Player {
         return y;
     }
 
-    public int getSpeed() {
-        return speed;
-    }
+    public int getSpeed() {return speed;}
 }
