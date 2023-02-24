@@ -2,48 +2,56 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/splash"
     android:gravity="center_horizontal"
-    android:paddingTop="150dp"
     android:orientation="vertical"
-    tools:context="ru.pavlenty.surfacegame2.HightScore"
-    android:background="@drawable/splash">
+    android:paddingTop="150dp"
+    tools:context="ru.pavlenty.surfacegame2.HightScore">
 
     <TextView
+        android:id="@+id/TotalScore"
+        android:layout_width="wrap_content"
+        android:layout_height="28dp"
+        android:gravity="center"
+        android:text="@string/TotalScore"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
         android:textAlignment="center"
         android:textColor="@android:color/white"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="30dp"
-        android:id="@+id/textView" />
+        android:textSize="30sp" />
 
     <TextView
-        android:textColor="@android:color/white"
-        android:textSize="30dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
         android:id="@+id/textView2"
-        />
-
-    <TextView
-        android:textColor="@android:color/white"
-        android:gravity="center"
-        android:textAlignment="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30dp"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="30sp" />
+
+    <TextView
         android:id="@+id/textView3"
-        />
-
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:textColor="@android:color/white"
         android:gravity="center"
         android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="30sp" />
+
+    <TextView
         android:id="@+id/textView4"
-        />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="30sp" />
+
+
 </LinearLayout>

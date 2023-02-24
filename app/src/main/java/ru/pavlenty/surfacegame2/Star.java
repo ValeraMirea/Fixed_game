@@ -8,18 +8,13 @@ public class Star {
     private int y;
     private int speed;
 
-    private int maxX;
-    private int maxY;
-    private int minX;
-    private int minY;
-
+    private final int maxX;
+    private final int maxY;
 
 
     public Star(int screenX, int screenY) {
         maxX = screenX;
         maxY = screenY;
-        minX = 0;
-        minY = 0;
         Random generator = new Random();
         speed = generator.nextInt(10);
 
@@ -47,8 +42,7 @@ public class Star {
         float minX = 1.0f;
         float maxX = 4.0f;
         Random rand = new Random();
-        float finalX = rand.nextFloat()* (maxX - minX) + minX;
-        return finalX;
+        return rand.nextFloat()* (maxX - minX) + minX;
     }
 
     public int getX() {

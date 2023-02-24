@@ -5,22 +5,18 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 public class Collision_of_ships {
-    private Bitmap bitmap;
+    private final Bitmap bitmap;
     private int x;
     private int y;
 
     public Collision_of_ships(Context context) {
-        x = -1000;
-        y = -1000;
+        x = -200;
+        y = -200;
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.boom);
     }
 
     public Bitmap getBitmap() {
         return bitmap;
-    }
-
-    public void setBitmap(Bitmap bitmap) {
-        this.bitmap = bitmap;
     }
 
     public int getX() {

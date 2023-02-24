@@ -6,30 +6,27 @@ import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Enemy {
     private int x;
     private int y;
     private int speed;
 
-    private int maxX;
-    private int maxY;
-    private int minX;
-    private int minY;
+    private final int maxX;
+    private final int maxY;
 
-    private Bitmap bitmap;
+    private final Bitmap bitmap;
 
-    private Rect detectCollision;
+    private final Rect detectCollision;
 
 
 
     public Enemy(Context context, int screenX, int screenY) {
         maxX = screenX;
         maxY = screenY;
-        minX = 0;
-        minY = 0;
         Random generator = new Random();
-        speed = generator.nextInt(10);
+        speed = ThreadLocalRandom.current().nextInt(1,10);
 
         x = generator.nextInt(maxX);
         y = generator.nextInt(maxY);
@@ -61,16 +58,8 @@ public class Enemy {
         this.x = x;
     }
 
-    public void setY(int y) {
-        this.y = y;
-    }
-
     public Bitmap getBitmap(){
         return bitmap;
-    }
-
-    public int getSpeed() {
-        return speed;
     }
 
     public int getX() {

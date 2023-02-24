@@ -6,19 +6,16 @@ import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 
 public class Player {
-    private Bitmap bitmap;
-    private int x;
+    private final Bitmap bitmap;
+    private final int x;
     private int y;
-    private int  speed = 0;
+    private int  speed;
     private boolean boosting;
     private int GRAVITY = -10;
-    private int maxY;
-    private int minY;
+    private final int maxY;
+    private final int minY;
 
-    private final int MIN_SPEED = 1;
-    private final int MAX_SPEED = 20;
-
-    private Rect detectCollision;
+    private final Rect detectCollision;
 
     public Player(Context context, int screenX, int screenY) {
         x = 75;
@@ -48,10 +45,12 @@ public class Player {
             speed -= 5;
         }
 
+        int MAX_SPEED = 20;
         if (speed > MAX_SPEED) {
             speed = MAX_SPEED;
         }
 
+        int MIN_SPEED = 1;
         if (speed < MIN_SPEED) {
             speed = MIN_SPEED;
         }
@@ -71,7 +70,7 @@ public class Player {
     }
     public  void IncreeseSpeed(){
         speed +=0.5;
-        GRAVITY = -8;
+        GRAVITY = -9;
         update();
     }
 

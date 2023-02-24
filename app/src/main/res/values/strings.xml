@@ -1,3 +1,6 @@
 <resources>
-    <string name="app_name">SurfaceGame2</string>
+    <string name="app_name">Space Fighter</string>
+    <string name="TotalScore">Итоговые результаты вашего путешествия:</string>
+    <string name="TotalScoreRating">Таблица рейтинга</string>
+    <string name="playgame">PlayGame</string>
 </resources>
